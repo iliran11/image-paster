@@ -32,5 +32,5 @@ export const nextArtist = async () => {
   ];
   const [document] = await happyKoala.aggregate(pipeline).toArray();
   const artist = document.artistName;
-  return { artist, prompt: prompt(artist) };
+  return { artist, prompt: prompt(artist), id: document._id };
 };

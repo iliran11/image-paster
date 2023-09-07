@@ -6,18 +6,24 @@ import useImagePaster from "./useImagePaster";
 interface Artist {
   name: string;
   prompt: string;
+  id: string;
 }
 
 export const getServerSideProps: GetServerSideProps<Artist> = async () => {
   try {
     const nextArtist = await happyKoala.nextArtist();
+
     return {
-      props: { name: nextArtist.artist, prompt: nextArtist.prompt },
+      props: {
+        name: nextArtist.artist,
+        prompt: nextArtist.prompt,
+        id: nextArtist.id.toString(),
+      },
     };
   } catch (e) {
     console.error(e);
     return {
-      props: { name: "", prompt: "" },
+      props: { name: "", prompt: "", id: "" },
     };
   }
 };
@@ -42,7 +48,7 @@ export default function Home(
         style={{ width: "300px", height: "300px", objectFit: "cover" }}
       />
       <h3>Send</h3>
-      <button onClick={handleSend}>Send</button>
+      <button onClick={() => handleSend(props.name, props.id)}>Send</button>
       <style jsx>{`
         .root {
           padding: 25px;

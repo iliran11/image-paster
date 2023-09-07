@@ -16,7 +16,7 @@ const useImagePaster = () => {
 
     reader.readAsDataURL(file);
   };
-  const handleSend = () => {
+  const handleSend = (artist: string, id: string) => {
     if (!imageString) throw new Error("no image");
 
     fetch("/api/image", {
@@ -24,6 +24,8 @@ const useImagePaster = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         imageBase64: imageString,
+        artist,
+        id,
       }),
     });
   };

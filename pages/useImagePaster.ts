@@ -14,7 +14,7 @@ const useImagePaster = () => {
     });
   };
 
-  const handlePaste = async (e) => {
+  const handlePaste = async (e: any) => {
     let items = e.clipboardData.items;
     for (let index in items) {
       let item = items[index];

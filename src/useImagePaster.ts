@@ -1,8 +1,10 @@
 import React from "react";
 
+type uploadStatus = "idle" | "uploading" | "error";
+
 const useImagePaster = () => {
   const [imageString, setImageString] = React.useState<null | string>(null);
-
+  const [uploadStatus, setUploadStatus] = React.useState<uploadStatus>("idle");
   const onFileUpload = (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -16,18 +18,23 @@ const useImagePaster = () => {
 
     reader.readAsDataURL(file);
   };
-  const handleSend = (artist: string, id: string) => {
+  const handleSend = async (artist: string, id: string) => {
+    setUploadStatus("uploading");
     if (!imageString) throw new Error("no image");
-
-    fetch("/api/image", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        imageBase64: imageString,
-        artist,
-        id,
-      }),
-    });
+    try {
+      await fetch("/api/image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imageBase64: imageString,
+          artist,
+          id,
+        }),
+      });
+      setUploadStatus("idle");
+    } catch (e) {
+      setUploadStatus("error");
+    }
   };
 
   const handlePaste = async (e: any) => {
@@ -52,7 +59,7 @@ const useImagePaster = () => {
       // You'll need to call `handlePaste` from here. This setup is non-ideal in a React component.
     });
   }, []);
-  return { handleSend, imageString, onFileUpload };
+  return { handleSend, imageString, onFileUpload, uploadStatus };
 };
 
 export default useImagePaster;

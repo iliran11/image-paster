@@ -1,3 +1,4 @@
+import cx from "classnames";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Head from "next/head";
 import * as happyKoala from "../lib/happy-koala";
@@ -31,7 +32,8 @@ export const getServerSideProps: GetServerSideProps<Artist> = async () => {
 export default function Home(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
-  const { handleSend, imageString, onFileUpload } = useImagePaster();
+  const { handleSend, imageString, onFileUpload, uploadStatus } =
+    useImagePaster();
   return (
     <div className="root">
       <Head>
@@ -48,7 +50,16 @@ export default function Home(
         style={{ width: "300px", height: "300px", objectFit: "cover" }}
       />
       <h3>Send</h3>
-      <button onClick={() => handleSend(props.name, props.id)}>Send</button>
+      <button
+        className={cx("send-button", {
+          idle: uploadStatus === "idle",
+          uploading: uploadStatus === "uploading",
+          error: uploadStatus === "error",
+        })}
+        onClick={() => handleSend(props.name, props.id)}
+      >
+        {uploadStatus}
+      </button>
       <style jsx>{`
         .root {
           max-width: 800px;
@@ -79,6 +90,24 @@ export default function Home(
           border: none;
           border-radius: 4px;
           cursor: pointer;
+        }
+        .send-button {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .idle {
+          background-color: #007bff;
+          color: white;
+        }
+        .uploading {
+          background-color: #ffc107;
+          color: black;
+        }
+        .error {
+          background-color: #dc3545;
+          color: white;
         }
       `}</style>
     </div>

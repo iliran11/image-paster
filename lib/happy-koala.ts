@@ -11,6 +11,16 @@ export const nextArtist = async () => {
   const happyKoala = db.collection("happy-koala");
   const pipeline = [
     {
+      $match: {
+        image: { $in: [null, false, 0, ""] },
+      },
+    },
+    {
+      $sort: {
+        _id: -1,
+      },
+    },
+    {
       $limit: 1,
     },
     {

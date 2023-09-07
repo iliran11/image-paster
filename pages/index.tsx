@@ -51,8 +51,34 @@ export default function Home(
       <button onClick={() => handleSend(props.name, props.id)}>Send</button>
       <style jsx>{`
         .root {
-          padding: 25px;
-          padding-bottom: 250px;
+          max-width: 800px;
+          margin: auto;
+          padding: 20px;
+          font-family: Arial, sans-serif;
+        }
+        h2,
+        h3 {
+          margin-bottom: 15px;
+        }
+        input[type="text"],
+        textarea,
+        input[type="file"] {
+          width: 100%;
+          padding: 10px;
+          margin: 5px 0;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+        img {
+          margin-top: 10px;
+        }
+        button {
+          padding: 10px 20px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
         }
       `}</style>
     </div>

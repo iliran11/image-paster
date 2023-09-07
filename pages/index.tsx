@@ -1,7 +1,7 @@
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Head from "next/head";
 import * as happyKoala from "../lib/happy-koala";
-import useImagePaster from "./useImagePaster";
+import useImagePaster from "../src/useImagePaster";
 
 interface Artist {
   name: string;

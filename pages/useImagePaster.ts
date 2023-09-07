@@ -2,6 +2,20 @@ import React from "react";
 
 const useImagePaster = () => {
   const [imageString, setImageString] = React.useState<null | string>(null);
+
+  const onFileUpload = (e: any) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = function () {
+      if (reader.result) {
+        const base64String = reader.result as string;
+        setImageString(base64String);
+      }
+    };
+
+    reader.readAsDataURL(file);
+  };
   const handleSend = () => {
     if (!imageString) throw new Error("no image");
 
@@ -36,7 +50,7 @@ const useImagePaster = () => {
       // You'll need to call `handlePaste` from here. This setup is non-ideal in a React component.
     });
   }, []);
-  return { handleSend, imageString };
+  return { handleSend, imageString, onFileUpload };
 };
 
 export default useImagePaster;

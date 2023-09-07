@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps<Artist> = async () => {
 export default function Home(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
-  const { handleSend, imageString } = useImagePaster();
+  const { handleSend, imageString, onFileUpload } = useImagePaster();
   return (
     <div className="root">
       <Head>
@@ -36,7 +36,7 @@ export default function Home(
       <p>prompt</p>
       <textarea value={props.prompt} rows={10} readOnly />
       <h2>Form</h2>
-      <h3>Paste image</h3>
+      <input type="file" onChange={onFileUpload} />
       <img
         src={imageString as string}
         style={{ width: "300px", height: "300px", objectFit: "cover" }}

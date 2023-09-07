@@ -60,3 +60,38 @@ export const updateImage = async (id: string, image: string) => {
   const result = await happyKoala.updateOne(query, update);
   return;
 };
+
+export const getAll = async () => {
+  const client = await clientPromise;
+  const db = client.db("image-paster");
+  const happyKoala = db.collection("happy-koala");
+  const pipeline = [
+    {
+      $match: {
+        image: { $exists: true, $ne: null },
+      },
+    },
+    {
+      $lookup: {
+        from: "artists",
+        localField: "artist",
+        foreignField: "_id",
+        as: "artistData",
+      },
+    },
+    {
+      $unwind: "$artistData",
+    },
+    {
+      $project: {
+        image: 1,
+        name: "$artistData.name",
+        _id: 0,
+      },
+    },
+  ];
+
+  const results = await happyKoala.aggregate(pipeline).toArray();
+  const dd =  results.map((x) => ({ name: x.name, image: x.image }));
+  return dd;
+};

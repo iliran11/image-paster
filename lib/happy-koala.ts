@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import clientPromise from "../lib/mongodb";
 
 const animal = "happy Koala";
@@ -33,4 +34,19 @@ export const nextArtist = async () => {
   const [document] = await happyKoala.aggregate(pipeline).toArray();
   const artist = document.artistName;
   return { artist, prompt: prompt(artist), id: document._id };
+};
+
+export const updateImage = async (id: string, image: string) => {
+  const client = await clientPromise;
+  const db = client.db("image-paster");
+  const happyKoala = db.collection("happy-koala");
+  const query = { _id: new ObjectId(id) };
+  const update = {
+    $set: {
+      image,
+    },
+  };
+
+  const result = await happyKoala.updateOne(query, update);
+  return;
 };

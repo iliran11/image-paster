@@ -20,13 +20,17 @@ function ViewPage(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   return (
-    <div className="gallery">
-      {props.images.map((x, index) => (
-        <div className="image-container" key={index}>
-          <img src={x.image} alt={x.name} />
-          <p className="caption">{x.name}</p>
-        </div>
-      ))}
+    <div>
+      <h1>Total Pictures: {props.images.length}</h1>
+
+      <div className="gallery">
+        {props.images.map((x, index) => (
+          <div className="image-container" key={index}>
+            <img src={x.image} alt={x.name} />
+            <p className="caption">{x.name}</p>
+          </div>
+        ))}
+      </div>
       <style jsx>{`
         .gallery {
           display: flex;
